@@ -62,6 +62,20 @@ Detect every instance of a semantic category per frame.
 
 ### Install
 
+With [uv](https://docs.astral.sh/uv/) (recommended):
+
+```bash
+git clone https://github.com/speridlabs/eneas.git
+cd eneas
+uv sync                # core library
+uv sync --extra ui     # + Gradio demo (gradio, spaces)
+uv sync --all-extras   # + dev tools (pytest, ruff, black)
+```
+
+`uv sync` creates a `.venv` with the exact versions pinned in `uv.lock`. Run commands with `uv run`, e.g. `uv run eneas --help`.
+
+Or with pip:
+
 ```bash
 pip install -e .
 ```
