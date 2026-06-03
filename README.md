@@ -7,14 +7,50 @@ It can track and segment both **unique instances** and **generic semantic instan
 
 It works from points or natural-language descriptions and returns high-quality binary masks. And has been designed for robustness to avoid common failure modes of segmentation models, such as drifting, false positives, and false negatives.
 
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/a87b79ad-d373-458c-92d3-d09fdc441219" width="480" autoplay loop muted playsinline controls></video>
+</div>
+
+<div align="center">
+
+[![Project Page](https://img.shields.io/badge/Project_Page-1f6feb)](https://speridlabs.com/research/eneas)
+[![Paper](https://img.shields.io/badge/Paper-coming_soon-b31b1b)](#)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/speridlabs/eneas)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
+</div>
+
 ## Features
 
-| 🎯 Unique Instance Segmentation | 🔮 Generic Semantic Category Segmentation |
-| --- | --- |
-| Track one specific object instance across frames.<br><br>• Point-based or text-based annotation (open-vocabulary, zero-click)<br>• Bidirectional temporal propagation<br>• High-quality binary masks (B&W) every frame<br>• Save masks as PNG | Detect every instance of a semantic category per frame.<br><br>• Complex semantic open-vocabulary — name any complex semantic instance category<br>• Semantic validation to reduce false positives<br>• Frame-by-frame (no temporal tracking)<br>• Binary masks (B&W) per instance |
+<table>
+<tr>
+<td valign="top" width="50%">
+
+**🎯 Unique Instance Segmentation**
+
+Track one specific object instance across frames.
+
+- Point-based or text-based annotation (open-vocabulary, zero-click)
+- Bidirectional temporal propagation
+- High-quality binary masks (B&W) every frame
+- Save masks as PNG
+
+</td>
+<td valign="top" width="50%">
+
+**🔮 Generic Semantic Category Segmentation**
+
+Detect every instance of a semantic category per frame.
+
+- Complex semantic open-vocabulary — name any complex semantic instance category
+- Semantic validation to reduce false positives
+- Frame-by-frame (no temporal tracking)
+- Binary masks (B&W) per instance
+
+</td>
+</tr>
+</table>
 
 ## Installation
 
