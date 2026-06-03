@@ -286,6 +286,23 @@ class GenericCategorySegmenter:
             logger.warning(f"Could not pull model (server may be down or model unavailable): {e}")
             logger.info("Will attempt to use model anyway (may already be cached)")
 
+        # Warm the vision encoder onto the GPU while VRAM is free; otherwise Ollama
+        # offloads the mmproj projector to CPU under VRAM pressure (~9s/image vs ~1s).
+        if self.device == "cuda":
+            try:
+                buf = io.BytesIO()
+                Image.new("RGB", (64, 64), (32, 32, 32)).save(buf, format="JPEG")
+                dummy_image = base64.b64encode(buf.getvalue()).decode("utf-8")
+                ollama.chat(
+                    model=self.vlm_model_name,
+                    messages=[{"role": "user", "content": "ok", "images": [dummy_image]}],
+                    options={"temperature": 0.0, "num_predict": 1, "num_ctx": 4096},
+                    keep_alive=-1,
+                )
+                logger.info("VLM vision encoder pre-warmed on GPU")
+            except Exception as e:
+                logger.warning(f"VLM pre-warm failed (non-fatal): {e}")
+
         # Mark VLM model as loaded and ready for inference
         self.vlm_model = True
 
@@ -468,7 +485,7 @@ Example responses:
                     model=self.vlm_model_name,
                     messages=messages,
                     format=ValidationResult.model_json_schema(),
-                    options={"temperature": 0.0, "num_predict": num_predict, "num_ctx": 8192},
+                    options={"temperature": 0.0, "num_predict": num_predict, "num_ctx": 4096},
                     keep_alive=-1,
                 )
 
@@ -851,9 +868,9 @@ Example responses:
             )
 
         # Load models
+        self._load_vlm_model()
         self._load_grounding_model()
         self._load_image_text_model()
-        self._load_vlm_model()
 
         # Load SAM2 model for segmentation
         self._load_sam2_model()
