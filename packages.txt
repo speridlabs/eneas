@@ -1,0 +1,3 @@
+ffmpeg
+libgl1
+ollama

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENEAS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/eneas.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <h1>ENEAS</h1>
+        <p>Track a specific instance across frames, or detect every instance of a category.</p>
+      </div>
+      <a class="brand-lockup" href="https://www.speridlabs.com" target="_blank" rel="noreferrer" aria-label="speridlabs home">
+        <img src="/assets/logo-mark-trimmed.png" alt="" aria-hidden="true">
+        <span>speridlabs</span>
+      </a>
+    </header>
+
+    <nav class="tabs" aria-label="Mode">
+      <button class="tab active" type="button" data-tab="unique"><span>01 Unique Instance</span></button>
+      <button class="tab" type="button" data-tab="generic"><span>02 Generic Text</span></button>
+    </nav>
+
+    <section id="unique-panel" class="tab-panel active">
+      <div class="workbench">
+        <aside class="panel-left">
+          <div class="step-head">
+            <span class="step-no">01</span>
+            <span class="step-title">Input</span>
+            <span class="step-meta">Video &middot; Images</span>
+          </div>
+
+          <label id="unique-drop" class="file-drop">
+            <input id="unique-file" type="file" multiple accept="video/*,image/*">
+            <span class="upload-mark"></span>
+            <span id="unique-file-label">Drop input here or browse</span>
+          </label>
+          <div class="sampling-row">
+            <!--SAMPLING:unique-->
+            <button id="unique-extract" class="command-btn secondary" type="button">
+              <span class="play-icon"></span>
+              <span>Extract frames</span>
+            </button>
+          </div>
+
+          <div class="step-head">
+            <span class="step-no">02</span>
+            <span class="step-title">Reference frame</span>
+            <span class="step-meta"></span>
+          </div>
+          <div id="unique-ref-hint" class="reference-step-hint">Run <strong>Extract Frames</strong> to select a reference frame.</div>
+          <div id="unique-slider-wrap" class="slider-wrap hidden">
+            <input id="unique-frame-slider" type="range" min="0" max="0" value="0" step="1">
+            <span id="unique-frame-count" class="slider-value">0 / 0</span>
+          </div>
+
+          <div class="step-head">
+            <span class="step-no">03</span>
+            <span class="step-title">Annotation</span>
+            <span class="step-meta"></span>
+          </div>
+          <label class="field-label" for="unique-text">Text grounding (optional)</label>
+          <textarea id="unique-text" rows="2" placeholder="e.g. blonde woman with microphone"></textarea>
+          <div class="field-note">Text is used only when no points are selected.</div>
+
+          <details class="optional-settings" open>
+            <summary>
+              <span class="step-no">04</span>
+              <span class="step-title">Optional settings</span>
+            </summary>
+            <label class="field-label" for="unique-encoder">SAM2 encoder</label>
+            <select id="unique-encoder">
+              <option value="long-large" selected>long-large</option>
+              <option value="long-small">long-small</option>
+            </select>
+            <label class="check-row">
+              <input id="unique-offload" type="checkbox">
+              <span>GPU memory offload</span>
+            </label>
+          </details>
+        </aside>
+
+        <section class="panel-main">
+          <div id="unique-status">
+            <div class="status-row">
+              <span class="status-dot idle"></span>
+              <span class="status-msg">Idle &middot; drop input to start.</span>
+              <span class="status-time">--:--:--</span>
+            </div>
+          </div>
+
+          <div id="unique-setup-view">
+            <div class="canvas-head">
+              <span>Reference frame &middot; click to add points (optional)</span>
+              <button id="unique-clear-points" class="text-btn" type="button">Clear points</button>
+            </div>
+            <div id="unique-reference" class="media-box reference-box stage empty">
+              <div class="empty-state">Extract frames to choose a reference frame.</div>
+              <img id="unique-reference-img" alt="Reference frame" class="hidden">
+              <canvas id="unique-point-canvas"></canvas>
+              <div class="stage-overlay">
+                <span class="spinner"></span>
+                <span>Segmenting&hellip;</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="unique-result-view" class="hidden">
+            <div class="canvas-head">
+              <span>Result &middot; masks overlaid per frame</span>
+              <span class="head-actions">
+                <button id="unique-back" class="text-btn" type="button">&larr; Reference frame</button>
+              </span>
+            </div>
+            <div class="media-box result-box stage">
+              <div id="unique-result-empty" class="empty-state">Run segmentation to generate a result.</div>
+              <video id="unique-result" class="hidden" controls playsinline></video>
+              <a id="unique-download" class="download-fab hidden" href="#" download title="Download video" aria-label="Download video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </a>
+            </div>
+            <div id="unique-stats">
+              <div class="stats">
+                <div class="cell"><div class="k">Frames</div><div class="v">0</div></div>
+                <div class="cell"><div class="k">Masks</div><div class="v">0</div></div>
+                <div class="cell"><div class="k">Latency / frame</div><div class="v">0.000 s</div></div>
+                <div class="cell"><div class="k">Inference</div><div class="v">0.0 s</div></div>
+              </div>
+            </div>
+          </div>
+          <button id="unique-run" class="command-btn primary run-btn" type="button">
+            <span class="play-icon"></span>
+            <span>Run segmentation</span>
+          </button>
+          <button type="button" class="example-card" data-prefix="unique" data-src="/assets/examples/reporter.mp4" data-fields='{"unique-text":"blonde woman with microphone"}'>
+            <span class="example-tag">Example</span>
+            <img class="example-thumb" src="/assets/examples/reporter_thumb.jpg" alt="">
+            <span class="example-name">reporter.mp4</span>
+            <span class="example-desc">blonde woman with microphone</span>
+          </button>
+        </section>
+      </div>
+    </section>
+
+    <section id="generic-panel" class="tab-panel">
+      <div class="workbench">
+        <aside class="panel-left">
+          <div class="step-head">
+            <span class="step-no">01</span>
+            <span class="step-title">Input</span>
+            <span class="step-meta">Video &middot; Images</span>
+          </div>
+
+          <label id="generic-drop" class="file-drop">
+            <input id="generic-file" type="file" multiple accept="video/*,image/*">
+            <span class="upload-mark"></span>
+            <span id="generic-file-label">Drop input here or browse</span>
+          </label>
+          <!--SAMPLING:generic-->
+
+          <div class="step-head">
+            <span class="step-no">02</span>
+            <span class="step-title">Text prompt</span>
+            <span class="step-meta">Category</span>
+          </div>
+          <label class="field-label" for="generic-category">Category</label>
+          <textarea id="generic-category" rows="2" placeholder="e.g. dog"></textarea>
+
+          <div class="step-head">
+            <span class="step-no">03</span>
+            <span class="step-title">Detection</span>
+            <span class="step-meta">Thresholds</span>
+          </div>
+          <label class="range-label" for="generic-accept">
+            <span>Accept threshold</span>
+            <output id="generic-accept-value">0.30</output>
+          </label>
+          <input id="generic-accept" type="range" min="0" max="1" step="0.01" value="0.30">
+          <label class="range-label" for="generic-reject">
+            <span>Reject threshold</span>
+            <output id="generic-reject-value">0.10</output>
+          </label>
+          <input id="generic-reject" type="range" min="0" max="1" step="0.01" value="0.10">
+
+          <div class="step-head">
+            <span class="step-no">04</span>
+            <span class="step-title">VLM</span>
+            <span class="step-meta">Ollama &middot; GPU</span>
+          </div>
+          <label class="field-label" for="generic-vlm">Model</label>
+          <select id="generic-vlm">
+            <option value="qwen3-vl:4b-instruct-q8_0" selected>qwen3-vl:4b-instruct-q8_0</option>
+            <option value="qwen3-vl:2b-instruct-q8_0">qwen3-vl:2b-instruct-q8_0</option>
+          </select>
+          <div class="field-note">Model GPU load may take ~15-20 s on first use.</div>
+        </aside>
+
+        <section class="panel-main">
+          <div id="generic-status">
+            <div class="status-row">
+              <span class="status-dot idle"></span>
+              <span class="status-msg">Idle &middot; awaiting input.</span>
+              <span class="status-time">--:--:--</span>
+            </div>
+          </div>
+
+          <div class="canvas-head">
+            <span id="generic-head-label">Input &middot; preview</span>
+          </div>
+          <div id="generic-result-box" class="media-box result-box large stage">
+            <div id="generic-result-empty" class="empty-state">Drop input to preview.</div>
+            <video id="generic-input" class="hidden" muted playsinline controls preload="metadata"></video>
+            <img id="generic-input-img" alt="Input preview" class="hidden">
+            <video id="generic-result" class="hidden" controls playsinline></video>
+            <a id="generic-download" class="download-fab hidden" href="#" download title="Download video" aria-label="Download video">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </a>
+            <div class="stage-overlay">
+              <span class="spinner"></span>
+              <span>Segmenting&hellip;</span>
+            </div>
+          </div>
+          <div id="generic-stats" class="hidden">
+            <div class="stats">
+              <div class="cell"><div class="k">Frames</div><div class="v">0</div></div>
+              <div class="cell"><div class="k">Detections</div><div class="v">0</div></div>
+              <div class="cell"><div class="k">Latency / frame</div><div class="v">0.000 s</div></div>
+              <div class="cell"><div class="k">Inference</div><div class="v">0.0 s</div></div>
+            </div>
+          </div>
+          <button id="generic-run" class="command-btn primary run-btn" type="button">
+            <span class="play-icon"></span>
+            <span>Run segmentation</span>
+          </button>
+          <button type="button" class="example-card" data-prefix="generic" data-src="/assets/examples/moving.mp4" data-fields='{"generic-category":"person","generic-accept":"0.30","generic-reject":"0.10","generic-vlm":"qwen3-vl:4b-instruct-q8_0"}'>
+            <span class="example-tag">Example</span>
+            <img class="example-thumb" src="/assets/examples/moving_thumb.jpg" alt="">
+            <span class="example-name">moving.mp4</span>
+            <span class="example-desc">person &middot; accept 0.30 &middot; reject 0.10</span>
+          </button>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="/assets/eneas.js"></script>
+</body>
+</html>
