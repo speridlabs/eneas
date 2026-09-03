@@ -521,7 +521,7 @@ If you use ENEAS in your research, please cite:
 ```bibtex
 @techreport{delpino2026eneas,
   title  = {ENEAS: Embedding-guided Neural Ensemble for Adaptive Segmentation},
-  author = {del Pino, Javier and S\'anchez, Alejandro and Garabito, Chema},
+  author = {del Pino, Javier and Rodr\'iguez, Salvador and Garabito, Alejandro and \'Alvarez, Javier and Garabito, Chema},
   institution = {SperidLabs},
   year   = {2026},
   url    = {https://github.com/speridlabs/eneas}
