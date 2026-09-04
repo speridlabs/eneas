@@ -14,7 +14,7 @@ It works from points or natural-language descriptions and returns high-quality b
 <div align="center">
 
 [![Project Page](https://img.shields.io/badge/Project_Page-1f6feb)](https://speridlabs.com/research/eneas)
-[![Paper](https://img.shields.io/badge/Paper-coming_soon-b31b1b)](#)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.03756-b31b1b)](https://arxiv.org/abs/2609.03756)
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/speridlabs/eneas)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -519,12 +519,12 @@ ENEAS builds upon the SeC (Segment and Caption) model, which is also licensed un
 If you use ENEAS in your research, please cite:
 
 ```bibtex
-@techreport{delpino2026eneas,
-  title  = {ENEAS: Embedding-guided Neural Ensemble for Adaptive Segmentation},
-  author = {del Pino, Javier and Rodr\'iguez, Salvador and Garabito, Alejandro and \'Alvarez, Javier and Garabito, Chema},
-  institution = {SperidLabs},
-  year   = {2026},
-  url    = {https://github.com/speridlabs/eneas}
+@article{delpino2026eneas,
+  title   = {ENEAS: Embedding-guided Neural Ensemble for Adaptive Segmentation},
+  author  = {del Pino, Javier and Rodr\'iguez, Salvador and Garabito, Alejandro and \'Alvarez, Javier and Garabito, Chema},
+  journal = {arXiv preprint arXiv:2609.03756},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2609.03756}
 }
 ```
 
